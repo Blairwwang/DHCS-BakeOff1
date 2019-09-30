@@ -16,6 +16,7 @@ int startTime = 0; // time starts when the first click is captured
 int finishTime = 0; //records the time of the final click
 int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
+boolean onTarget = false;
 Robot robot; //initalized in setup 
 
 int numRepeats = 1; //sets the number of times each button repeats in the test
@@ -80,6 +81,15 @@ void draw()
 
   fill(255, 0, 0, 200); // set fill color to translucent red
   ellipse(mouseX, mouseY, 20, 20); //draw user cursor as a circle with a diameter of 20
+  
+  // chage color of the cuurent square if it is the target square
+  Rectangle bounds = getButtonLocation(trials.get(trialNum));
+  if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
+  {
+    onTarget = true;
+  } else {
+    onTarget = false;
+  }
 }
 
 void mousePressed() // test to see if hit was in target!
@@ -114,7 +124,7 @@ void mousePressed() // test to see if hit was in target!
   trialNum++; //Increment trial number
 
   //in this example code, we move the mouse back to the middle
-  //robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly center of window!
+  robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly center of window!
 }  
 
 //probably shouldn't have to edit this method
@@ -130,10 +140,17 @@ void drawButton(int i)
 {
   Rectangle bounds = getButtonLocation(i);
 
-  if (trials.get(trialNum) == i) // see if current button is the target
-    fill(0, 255, 255); // if so, fill cyan
-  else
-    fill(200); // if not, fill gray
+  if (trials.get(trialNum) == i) {
+    if (onTarget) {
+      // see if current button is the target, if so, make the color green
+      fill(152, 251, 152);
+    } else {
+      fill(255, 160, 122);
+    }
+  } else {
+    // if not, fill gray
+    fill(105, 105, 105);
+  }
 
   rect(bounds.x, bounds.y, bounds.width, bounds.height); //draw button
 }
