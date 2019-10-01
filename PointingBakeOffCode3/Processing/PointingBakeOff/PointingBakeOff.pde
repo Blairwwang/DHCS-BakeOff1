@@ -92,9 +92,9 @@ void draw()
   }
 }
 
-void mousePressed() // test to see if hit was in target!
+void onButtonPushed()
 {
-  if (trialNum >= trials.size()) //if task is over, just return
+    if (trialNum >= trials.size()) //if task is over, just return
     return;
 
   if (trialNum == 0) //check if first click, if so, start timer
@@ -125,6 +125,11 @@ void mousePressed() // test to see if hit was in target!
 
   //in this example code, we move the mouse back to the middle
   robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly center of window!
+}
+
+void mousePressed() // test to see if hit was in target!
+{
+    onButtonPushed();
 }  
 
 //probably shouldn't have to edit this method
@@ -167,9 +172,9 @@ void mouseDragged()
   //https://processing.org/reference/mouseDragged_.html
 }
 
-void keyPressed() 
-{
-  //can use the keyboard if you wish
-  //https://processing.org/reference/keyTyped_.html
-  //https://processing.org/reference/keyCode.html
+void keyReleased() {
+  if (int(key) == 32)
+   {
+     onButtonPushed();
+   }
 }
