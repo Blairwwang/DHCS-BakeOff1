@@ -7,9 +7,9 @@ import processing.core.PApplet;
 
 //when in doubt, consult the Processsing reference: https://processing.org/reference/
 
-int margin = 115; //set the margin around the squares
+int margin = 200; //set the margin around the squares
 final int padding = 50; // padding between buttons and also their width/height
-final int buttonSize = 80; // padding between buttons and also their width/height
+final int buttonSize = 40; // padding between buttons and also their width/height
 ArrayList<Integer> trials = new ArrayList<Integer>(); //contains the order of buttons that activate in the test
 int trialNum = 0; //the current trial number (indexes into trials array above)
 int startTime = 0; // time starts when the first click is captured
