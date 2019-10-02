@@ -21,6 +21,9 @@ Robot robot; //initalized in setup
 
 int numRepeats = 1; //sets the number of times each button repeats in the test
 
+// Array of all click regions for buttons
+Rectangle[] buttonClickRegions = new Rectangle[16];
+
 void setup()
 {
   size(700, 700); // set the size of the window
@@ -50,8 +53,20 @@ void setup()
   System.out.println("trial order: " + trials);
   
   frame.setLocation(0,0); // put window in top left corner of screen (doesn't always work)
+  
+  // Calculate click regions
+  for (int i = 0; i < 16; i++)
+  {
+     Rectangle bounds = getButtonLocation(i);
+     
+     int clickX = bounds.x - (padding / 2);
+     int clickY = bounds.y - (padding / 2);
+     int clickSize = bounds.height + padding;
+     
+     buttonClickRegions[i] = new Rectangle(clickX, clickY, clickSize, clickSize);
+  }
+  
 }
-
 
 void draw()
 {
@@ -77,19 +92,31 @@ void draw()
   text((trialNum + 1) + " of " + trials.size(), 40, 20); //display what trial the user is on
 
   for (int i = 0; i < 16; i++)// for all button
-    drawButton(i); //draw button
-
-  fill(255, 0, 0, 200); // set fill color to translucent red
-  ellipse(mouseX, mouseY, 20, 20); //draw user cursor as a circle with a diameter of 20
-  
-  // chage color of the cuurent square if it is the target square
-  Rectangle bounds = getButtonLocation(trials.get(trialNum));
-  if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
   {
-    onTarget = true;
-  } else {
-    onTarget = false;
+    boolean withHighlight = false;
+    
+    // Check if we should draw the selection outline
+    Rectangle bounds = buttonClickRegions[i];
+    if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height))
+    {
+      withHighlight = true;
+      if (i == trials.get(trialNum))
+        stroke(235, 164, 52);
+      else
+        stroke(150, 150, 150);
+     
+      strokeWeight(10);
+    }
+    else
+    {
+      strokeWeight(0);
+    }
+    drawButton(i, withHighlight); //draw button
   }
+  
+  strokeWeight(0); // disable stroke from buttons
+  fill(255, 0, 0, 200); // set fill color to translucent red
+  ellipse(mouseX, mouseY, 30, 30); //draw user cursor as a circle with a diameter of 20
 }
 
 void onButtonPushed()
@@ -106,9 +133,8 @@ void onButtonPushed()
     //write to terminal some output. Useful for debugging too.
     println("we're done!");
   }
-
-  Rectangle bounds = getButtonLocation(trials.get(trialNum));
-
+  
+  Rectangle bounds = buttonClickRegions[trials.get(trialNum)];
  //check to see if mouse cursor is inside button 
   if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
   {
@@ -122,9 +148,6 @@ void onButtonPushed()
   }
 
   trialNum++; //Increment trial number
-
-  //in this example code, we move the mouse back to the middle
-  robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly center of window!
 }
 
 void mousePressed() // test to see if hit was in target!
@@ -141,12 +164,12 @@ Rectangle getButtonLocation(int i) //for a given button ID, what is its location
 }
 
 //you can edit this method to change how buttons appear
-void drawButton(int i)
+void drawButton(int i, boolean withHighlight)
 {
   Rectangle bounds = getButtonLocation(i);
 
   if (trials.get(trialNum) == i) {
-    if (onTarget) {
+    if (withHighlight) {
       // see if current button is the target, if so, make the color green
       fill(152, 251, 152);
     } else {
@@ -154,7 +177,14 @@ void drawButton(int i)
     }
   } else {
     // if not, fill gray
+    if (withHighlight)
+    {
+      fill(140, 140, 140);
+    }
+    else
+    {
     fill(105, 105, 105);
+    }
   }
 
   rect(bounds.x, bounds.y, bounds.width, bounds.height); //draw button
