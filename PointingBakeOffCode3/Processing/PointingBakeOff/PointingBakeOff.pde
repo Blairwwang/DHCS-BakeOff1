@@ -4,6 +4,7 @@ import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.Collections;
 import processing.core.PApplet;
+import processing.sound.*;
 
 //when in doubt, consult the Processsing reference: https://processing.org/reference/
 
@@ -18,7 +19,9 @@ int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
 boolean onTarget = false;
 int lastTargetButton = -1;
-Robot robot; //initalized in setup 
+Robot robot; //initalized in setup
+SoundFile clicked;
+SoundFile missed;
 
 int numRepeats = 1; //sets the number of times each button repeats in the test
 
@@ -29,12 +32,16 @@ void setup()
 {
   size(700, 700); // set the size of the window
   //noCursor(); //hides the system cursor if you want
+  cursor(CROSS);
   noStroke(); //turn off all strokes, we're just using fills here (can change this if you want)
   textFont(createFont("Arial", 16)); //sets the font to Arial size 16
   textAlign(CENTER);
   frameRate(60);
   ellipseMode(CENTER); //ellipses are drawn from the center (BUT RECTANGLES ARE NOT!)
   //rectMode(CENTER); //enabling will break the scaffold code, but you might find it easier to work with centered rects
+  
+  clicked = new SoundFile(this, "coin.wav");
+  missed = new SoundFile(this, "fail.wav");
 
   try {
     robot = new Robot(); //create a "Java Robot" class that can move the system cursor
@@ -102,7 +109,7 @@ void draw()
     {
       withHighlight = true;
       if (i == trials.get(trialNum))
-        stroke(235, 164, 52);
+        stroke(23, 36, 133);
       else
         stroke(150, 150, 150);
      
@@ -112,6 +119,7 @@ void draw()
     {
       strokeWeight(0);
     }
+    
     drawButton(i, withHighlight); //draw button
   }
   
@@ -129,7 +137,7 @@ void draw()
   
   strokeWeight(0); // disable stroke from buttons
   fill(255, 0, 0, 200); // set fill color to translucent red
-  ellipse(mouseX, mouseY, 30, 30); //draw user cursor as a circle with a diameter of 20
+  ellipse(mouseX, mouseY, 40, 40); //draw user cursor as a circle with a diameter of 20
 }
 
 void onButtonPushed()
@@ -153,11 +161,13 @@ void onButtonPushed()
   {
     System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
     hits++; 
+    clicked.play();
   } 
   else
   {
     System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
     misses++;
+    missed.play();
   }
   
   lastTargetButton = trials.get(trialNum);
@@ -196,7 +206,7 @@ void drawButton(int i, boolean withHighlight)
   if (trials.get(trialNum) == i) {
     if (withHighlight) {
       // see if current button is the target, if so, make the color green
-      fill(152, 251, 152);
+      fill(72, 90, 224);
     } else {
       fill(255, 160, 122);
     }
