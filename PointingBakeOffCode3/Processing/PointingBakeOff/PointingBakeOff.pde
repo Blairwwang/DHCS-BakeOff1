@@ -23,7 +23,7 @@ Robot robot; //initalized in setup
 SoundFile clicked;
 SoundFile missed;
 
-int numRepeats = 1; //sets the number of times each button repeats in the test
+int numRepeats = 2; //sets the number of times each button repeats in the test
 
 // Array of all click regions for buttons
 Rectangle[] buttonClickRegions = new Rectangle[16];
@@ -99,6 +99,7 @@ void draw()
   fill(255); //set fill color to white
   text((trialNum + 1) + " of " + trials.size(), 40, 20); //display what trial the user is on
 
+  boolean onTarget = false;
   for (int i = 0; i < 16; i++)// for all button
   {
     boolean withHighlight = false;
@@ -109,7 +110,10 @@ void draw()
     {
       withHighlight = true;
       if (i == trials.get(trialNum))
+      {
+        onTarget = true;
         stroke(23, 36, 133);
+      }
       else
         stroke(150, 150, 150);
      
@@ -123,20 +127,22 @@ void draw()
     drawButton(i, withHighlight); //draw button
   }
   
-  if (lastTargetButton >= 0)
-  {
-    int x1 = GetButtonCenterX(lastTargetButton);
-    int y1 = GetButtonCenterY(lastTargetButton);
-    int x2 = GetButtonCenterX(trials.get(trialNum));
-    int y2 = GetButtonCenterY(trials.get(trialNum));
+  int x1 = GetButtonCenterX(trials.get(trialNum));
+  int y1 = GetButtonCenterY(trials.get(trialNum));
     
-    strokeWeight(8);
-    stroke(0, 0, 255, 200);
-    line(x1, y1, x2, y2);
-  }
-  
+  strokeWeight(8);
+  stroke(0, 0, 255, 200);
+  line(mouseX, mouseY, x1, y1);
+
   strokeWeight(0); // disable stroke from buttons
-  fill(255, 0, 0, 200); // set fill color to translucent red
+  if (!onTarget)
+  {
+    fill(255, 0, 0, 200); // set fill color to translucent red
+  }
+  else
+  {
+    fill(0, 255, 0, 200); 
+  }
   ellipse(mouseX, mouseY, 40, 40); //draw user cursor as a circle with a diameter of 20
 }
 
