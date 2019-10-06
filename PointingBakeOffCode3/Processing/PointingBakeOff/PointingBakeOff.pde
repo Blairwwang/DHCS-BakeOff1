@@ -17,7 +17,8 @@ int finishTime = 0; //records the time of the final click
 int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
 boolean onTarget = false;
-Robot robot; //initalized in setup 
+Robot robot; //initalized in setup
+float lastMovedTime;
 
 int numRepeats = 1; //sets the number of times each button repeats in the test
 
@@ -66,6 +67,7 @@ void setup()
      buttonClickRegions[i] = new Rectangle(clickX, clickY, clickSize, clickSize);
   }
   
+  lastMovedTime = millis();
 }
 
 void draw()
@@ -117,6 +119,11 @@ void draw()
   strokeWeight(0); // disable stroke from buttons
   fill(255, 0, 0, 200); // set fill color to translucent red
   ellipse(mouseX, mouseY, 30, 30); //draw user cursor as a circle with a diameter of 20
+  
+  if (trialNum > 0 && (millis() - lastMovedTime >= 600))
+  {
+    onButtonPushed();
+  }
 }
 
 void onButtonPushed()
@@ -148,6 +155,8 @@ void onButtonPushed()
   }
 
   trialNum++; //Increment trial number
+  
+  lastMovedTime = millis();
 }
 
 void mousePressed() // test to see if hit was in target!
