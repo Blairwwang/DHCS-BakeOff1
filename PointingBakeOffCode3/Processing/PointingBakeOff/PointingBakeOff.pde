@@ -157,6 +157,22 @@ void onButtonPushed()
   }
   
   Rectangle bounds = buttonClickRegions[trials.get(trialNum)];
+   int minX = margin;
+   int minY = margin;
+   int maxX = 3 * (padding + buttonSize) + margin + buttonSize;
+   int maxY = 4 * (padding + buttonSize) + margin - buttonSize;   
+   if (mouseX < minX) {
+     mouseX = max(minX, mouseX);
+   }
+   if (mouseX > maxX) {
+     mouseX = min(maxX, mouseX);
+   }
+   if (mouseY < minY) {
+     mouseY = max(minY, mouseY);
+   }
+   if (mouseY > maxY) {
+     mouseY = min(maxY, mouseY);
+   }
  //check to see if mouse cursor is inside button 
   if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
   {
