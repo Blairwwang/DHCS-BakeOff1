@@ -19,6 +19,7 @@ int misses = 0; //number of missed clicks
 boolean onTarget = false;
 Robot robot; //initalized in setup
 float lastMovedTime;
+int lastTargetButton = -1;
 
 int numRepeats = 1; //sets the number of times each button repeats in the test
 
@@ -116,6 +117,18 @@ void draw()
     drawButton(i, withHighlight); //draw button
   }
   
+  if (lastTargetButton >= 0)
+  {
+    int x1 = GetButtonCenterX(lastTargetButton);
+    int y1 = GetButtonCenterY(lastTargetButton);
+    int x2 = GetButtonCenterX(trials.get(trialNum));
+    int y2 = GetButtonCenterY(trials.get(trialNum));
+    
+    strokeWeight(8);
+    stroke(0, 0, 255, 200);
+    line(x1, y1, x2, y2);
+  }
+  
   strokeWeight(0); // disable stroke from buttons
   fill(255, 0, 0, 200); // set fill color to translucent red
   ellipse(mouseX, mouseY, 30, 30); //draw user cursor as a circle with a diameter of 20
@@ -153,6 +166,8 @@ void onButtonPushed()
     System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
     misses++;
   }
+  
+  lastTargetButton = trials.get(trialNum);
 
   trialNum++; //Increment trial number
   
@@ -170,6 +185,16 @@ Rectangle getButtonLocation(int i) //for a given button ID, what is its location
    int x = (i % 4) * (padding + buttonSize) + margin;
    int y = (i / 4) * (padding + buttonSize) + margin;
    return new Rectangle(x, y, buttonSize, buttonSize);
+}
+
+int GetButtonCenterX(int i)
+{
+   return (i % 4) * (padding + buttonSize) + margin + (buttonSize / 2);
+}
+
+int GetButtonCenterY(int i)
+{
+    return (i / 4) * (padding + buttonSize) + margin + (buttonSize / 2);
 }
 
 //you can edit this method to change how buttons appear
