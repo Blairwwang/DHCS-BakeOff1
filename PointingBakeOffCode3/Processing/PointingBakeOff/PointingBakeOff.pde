@@ -17,13 +17,8 @@ int finishTime = 0; //records the time of the final click
 int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
 boolean onTarget = false;
-<<<<<<< HEAD
-Robot robot; //initalized in setup
-float lastMovedTime;
 int lastTargetButton = -1;
-=======
 Robot robot; //initalized in setup 
->>>>>>> parent of ae9b4b1... Automatic clicks after 0.6 seconds
 
 int numRepeats = 1; //sets the number of times each button repeats in the test
 
