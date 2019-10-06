@@ -140,6 +140,7 @@ void draw()
   ellipse(mouseX, mouseY, 40, 40); //draw user cursor as a circle with a diameter of 20
 }
 
+
 void onButtonPushed()
 {
     if (trialNum >= trials.size()) //if task is over, just return
@@ -229,12 +230,31 @@ void mouseMoved()
 {
    //can do stuff everytime the mouse is moved (i.e., not clicked)
    //https://processing.org/reference/mouseMoved_.html
+   //System.out.println("mouseX=" + mouseX);
+   //System.out.println("mouseY=" + mouseY);
+   int minX = margin;
+   int minY = margin;
+   int maxX = 3 * (padding + buttonSize) + margin + buttonSize;
+   int maxY = 4 * (padding + buttonSize) + margin - buttonSize;   
+   if (mouseX < minX) {
+     mouseX = max(minX, mouseX);
+   }
+   if (mouseX > maxX) {
+     mouseX = min(maxX, mouseX);
+   }
+   if (mouseY < minY) {
+     mouseY = max(minY, mouseY);
+   }
+   if (mouseY > maxY) {
+     mouseY = min(maxY, mouseY);
+   }
 }
 
 void mouseDragged()
 {
   //can do stuff everytime the mouse is dragged
   //https://processing.org/reference/mouseDragged_.html
+
 }
 
 void keyReleased() {
