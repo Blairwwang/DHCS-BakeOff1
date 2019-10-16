@@ -8,6 +8,16 @@ import processing.sound.*;
 
 //when in doubt, consult the Processsing reference: https://processing.org/reference/
 
+////////////////////////////////////////////////////////////////
+// HEY TEAM PLEASE EDIT THESE!
+////////////////////////////////////////////////////////////////
+
+int id = 517; // your custom ID
+String dataFile = "results.txt"; // the file that results will be stored in
+int numRepeats = 1; //sets the number of times each button repeats in the test
+
+////////////////////////////////////////////////////////////////
+
 int margin = 200; //set the margin around the squares
 final int padding = 50; // padding between buttons and also their width/height
 final int buttonSize = 40; // padding between buttons and also their width/height
@@ -22,8 +32,7 @@ int lastTargetButton = -1;
 Robot robot; //initalized in setup
 SoundFile clicked;
 SoundFile missed;
-
-int numRepeats = 2; //sets the number of times each button repeats in the test
+PrintWriter output;
 
 // Array of all click regions for buttons
 Rectangle[] buttonClickRegions = new Rectangle[16];
@@ -74,6 +83,7 @@ void setup()
      buttonClickRegions[i] = new Rectangle(clickX, clickY, clickSize, clickSize);
   }
   
+  output = createWriter(dataFile);
 }
 
 void draw()
@@ -93,6 +103,9 @@ void draw()
     text("Total time taken: " + timeTaken + " sec", width / 2, height / 2 + 80);
     text("Average time for each button: " + nf((timeTaken)/(float)(hits+misses),0,3) + " sec", width / 2, height / 2 + 100);
     text("Average time for each button + penalty: " + nf(((timeTaken)/(float)(hits+misses) + penalty),0,3) + " sec", width / 2, height / 2 + 140);
+    
+    output.flush();
+    output.close();
     return; //return, nothing else to do now test is over
   }
 
