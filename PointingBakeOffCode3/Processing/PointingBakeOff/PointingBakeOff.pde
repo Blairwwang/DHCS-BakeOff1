@@ -14,7 +14,7 @@ import processing.sound.*;
 
 int id = 517; // your custom ID
 String dataFile = "results.txt"; // the file that results will be stored in
-int numRepeats = 1; //sets the number of times each button repeats in the test
+int numRepeats = 20; //sets the number of times each button repeats in the test
 
 ////////////////////////////////////////////////////////////////
 
@@ -227,7 +227,7 @@ void onButtonPushed()
     output.print(40 + ","); // button width
     output.print(nf((millis() - lastButtonClickedTime) / 1000f, 0, 3) + ",");
     output.print(didHit ? 1 : 0);
-    output.println("\n");
+    output.print("\n");
   }
   
   preTrialXPos = mouseX;
