@@ -34,6 +34,12 @@ SoundFile clicked;
 SoundFile missed;
 PrintWriter output;
 
+// For printing data to .txt
+int preTrialXPos = -1;
+int preTrialYPos = -1;
+int lastButtonClickedTime = 0;
+
+
 // Array of all click regions for buttons
 Rectangle[] buttonClickRegions = new Rectangle[16];
 
@@ -192,11 +198,14 @@ void onButtonPushed()
    if (mouseY > maxY) {
      mouseY = min(maxY, mouseY);
    }
+  
+  boolean didHit = false;
  //check to see if mouse cursor is inside button 
   if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
   {
     System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
-    hits++; 
+    hits++;
+    didHit = true;
     clicked.play();
   } 
   else
@@ -205,6 +214,25 @@ void onButtonPushed()
     misses++;
     missed.play();
   }
+  
+  // Write to file
+  if (trialNum > 0)
+  {
+    output.print(trialNum + ",");
+    output.print(id + ",");
+    output.print(preTrialXPos + ",");
+    output.print(preTrialYPos + ",");
+    output.print(GetButtonCenterX(trials.get(trialNum)) + ",");
+    output.print(GetButtonCenterY(trials.get(trialNum)) + ",");
+    output.print(40 + ","); // button width
+    output.print(nf((millis() - lastButtonClickedTime) / 1000f, 0, 3) + ",");
+    output.print(didHit ? 1 : 0);
+    output.println("\n");
+  }
+  
+  preTrialXPos = mouseX;
+  preTrialYPos = mouseY;
+  lastButtonClickedTime = millis();
   
   lastTargetButton = trials.get(trialNum);
 
