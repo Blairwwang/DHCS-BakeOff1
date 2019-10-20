@@ -12,8 +12,9 @@ import processing.sound.*;
 // HEY TEAM PLEASE EDIT THESE!
 ////////////////////////////////////////////////////////////////
 
-int id = 517; // your custom ID
-String dataFile = "results.txt"; // the file that results will be stored in
+//int id = 517; // your custom ID // Ilana's custom ID
+int id = 175; // your custom ID // Blair's custom ID
+String dataFile = "results_blair.txt"; // the file that results will be stored in
 int numRepeats = 20; //sets the number of times each button repeats in the test
 
 ////////////////////////////////////////////////////////////////
